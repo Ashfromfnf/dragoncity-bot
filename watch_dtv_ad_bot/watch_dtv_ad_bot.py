@@ -43,23 +43,30 @@ def locate_and_click(image_path, success_message, click=True, region=None, delay
 def show_dialog(message):
     ctypes.windll.user32.MessageBoxW(0, message, "Bot Notification", 1)
 
+
+def look_for_stop():
+
+    if locate_and_click(folder_location + 'next-in-5h.png', "Next In 5h found", click=False, region=(0, 0, 725, 1020)):
+        show_dialog("Time to take a break! Next In 6 hours.")
+        show_options_dialog()
+        
+    elif locate_and_click(folder_location + 'next-in-2h.png', "Next In 2h found", click=False, region=(0, 0, 725, 1020)):
+        show_dialog("Time to take a break! Next In 3 hours.")
+        show_options_dialog()
+        
+    elif locate_and_click(folder_location + 'out-of-ads.png', "Out of Ads found", click=False):
+        show_dialog("No Ads this time, try again later.")
+        show_options_dialog()
+        
+
 # Bot sequence of tasks
 def bot_cycle():
     while True:
-        if locate_and_click(folder_location + 'next-in-5h.png', "Next In 5h found", click=False, region=(0, 0, 725, 1020)):
-            show_dialog("Time to take a break! Next In 6 hours.")
-            show_options_dialog()
-            break
-        elif locate_and_click(folder_location + 'next-in-2h.png', "Next In 2h found", click=False, region=(0, 0, 725, 1020)):
-            show_dialog("Time to take a break! Next In 3 hours.")
-            show_options_dialog()
-            break
-        elif locate_and_click(folder_location + 'out-of-ads.png', "Out of Ads found", click=False):
-            show_dialog("No Ads this time, try again later.")
-            show_options_dialog()
-            break
-        elif locate_and_click(folder_location + 'close-reward.png', 'Close Reward Button found', delay_execution=5):
+
+        if locate_and_click(folder_location + 'close-reward.png', 'Close Reward Button found', delay_execution=5):
             continue
+        else: 
+            look_for_stop()
         tasks = [
             (folder_location + 'give-me-prizes.png', 'Give Me Prizes! Button found'),
             (folder_location + 'get-rewards.png', 'Get Rewards Button found'),
@@ -68,9 +75,14 @@ def bot_cycle():
             (folder_location + 'claim-yellow.png', 'Yellow Claim Button found'),
             (folder_location + 'claim-green.png', 'Green Claim Button found'),
             (folder_location + 'close-dtv-coin.png', 'Close DTV Coin Button found'),
+            (folder_location + 'skip1.png', 'skip button found yippeee')
         ]
+
         for task in tasks:
             locate_and_click(*task)
+
+            
+
 
 # Step 1: Open a Dialogue
 root = tk.Tk()

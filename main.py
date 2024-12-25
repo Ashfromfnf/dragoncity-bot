@@ -41,6 +41,8 @@ while confirmation == 'yes':
             print("Exiting the program.")
             break
         else:
-            print("Searching for the Dragon City Icon...")
+            print(GREEN + f"User says that dragon city is there, i'll let it slide.." + RESET)
+            show_options_dialog()
+            break
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
